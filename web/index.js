@@ -8,6 +8,8 @@ import express from 'express'
 import cookieParser from 'cookie-parser'
 import cors from 'cors'
 import bodyParser from 'body-parser'
+import fs from 'fs'
+
 import { Shopify, LATEST_API_VERSION } from '@shopify/shopify-api'
 
 import applyAuthMiddleware from './middleware/auth.js'
@@ -25,6 +27,7 @@ import billingRoute from './backend/routes/admin/billing.js'
 import historyActionRoute from './backend/routes/admin/history_action.js'
 import duplicatorPackageRoute from './backend/routes/admin/duplicator_package.js'
 import submitionRoute from './backend/routes/admin/submition.js'
+import ServerRebuildMiddleware from './backend/middlewares/server_rebuild.js'
 
 console.log('WEB ENV')
 console.log('| NODE_ENV :>>', process.env.NODE_ENV)
@@ -250,6 +253,11 @@ createServer().then(({ app }) =>
     console.log(`+   Welcome to ArenaCommerce App   +`)
     console.log(`+                                  +`)
     console.log(`++++++++++++++++++++++++++++++++++++`)
-    console.log(`\n  ${process.env.HOST}/api/auth?shop=${process.env.SHOP}\n`)
+    console.log(`\n${process.env.HOST}/api/auth?shop=${process.env.SHOP}\n`)
+
+    /**
+     * Handle server rebuild
+     */
+    ServerRebuildMiddleware()
   })
 )

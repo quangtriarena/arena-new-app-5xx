@@ -102,8 +102,6 @@ export default {
     try {
       let storeSetting = await Model.findOne({ where: { shop: session.shop } })
       if (!storeSetting) {
-        console.log('✨ Init new store setting')
-
         /**
          * Get shopify shop
          */
@@ -133,8 +131,6 @@ export default {
         })
         storeSetting = storeSetting.toJSON()
       } else {
-        console.log('🚀 App already install')
-
         /**
          * App already install
          */

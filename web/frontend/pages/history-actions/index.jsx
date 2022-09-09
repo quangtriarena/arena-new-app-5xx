@@ -46,11 +46,11 @@ function HistoryActionsPage(props) {
     }
   }, [location.search])
 
-  const handleDelete = async (deleted) => {
+  const handleDelete = async (selected) => {
     try {
       actions.showAppLoading()
 
-      let res = await HistoryActionApi.delete(deleted.id)
+      let res = await HistoryActionApi.delete(selected.id)
       if (!res.success) throw res.error
 
       actions.showNotify({ message: 'Deleted' })
@@ -63,11 +63,11 @@ function HistoryActionsPage(props) {
     }
   }
 
-  const handleCancel = async (canceled) => {
+  const handleCancel = async (selected) => {
     try {
       actions.showAppLoading()
 
-      let res = await HistoryActionApi.update(canceled.id, {
+      let res = await HistoryActionApi.update(selected.id, {
         status: 'CANCELED',
         message: 'Canceled by user',
       })
@@ -75,11 +75,28 @@ function HistoryActionsPage(props) {
 
       let _historyActions = { ...historyActions }
       _historyActions.items = historyActions.items.map((item) =>
-        item.id === canceled.id ? res.data : item
+        item.id === selected.id ? res.data : item
       )
       setHistoryActions(_historyActions)
 
       actions.showNotify({ message: 'Canceled' })
+    } catch (error) {
+      actions.showNotify({ message: error.message, error: true })
+    } finally {
+      actions.hideAppLoading()
+    }
+  }
+
+  const handleRerun = async (selected) => {
+    try {
+      actions.showAppLoading()
+
+      let res = await HistoryActionApi.rerun(selected.id)
+      if (!res.success) throw res.error
+
+      actions.showNotify({ message: 'Success' })
+
+      getHistoryActions()
     } catch (error) {
       actions.showNotify({ message: error.message, error: true })
     } finally {
@@ -107,6 +124,7 @@ function HistoryActionsPage(props) {
           items={historyActions?.items}
           onDelete={(item) => handleDelete(item)}
           onCancel={(item) => handleCancel(item)}
+          onRerun={(item) => handleRerun(item)}
         />
       </Card>
 

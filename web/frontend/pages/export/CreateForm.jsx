@@ -45,7 +45,6 @@ const ResourceFormData = {
     required: true,
     validate: {},
     options: [
-      { label: '2 (test)', value: '2' },
       { label: '5 (test)', value: '5' },
       { label: '10', value: '10' },
       { label: '50', value: '50' },

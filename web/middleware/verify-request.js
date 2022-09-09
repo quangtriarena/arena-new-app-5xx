@@ -15,7 +15,6 @@ export default function verifyRequest(
   app,
   { billing = { required: false } } = { billing: { required: false } }
 ) {
-  console.log('verifyRequest')
   return async (req, res, next) => {
     const session = await Shopify.Utils.loadCurrentSession(req, res, app.get('use-online-tokens'))
 

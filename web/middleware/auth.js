@@ -11,12 +11,10 @@ export default function applyAuthMiddleware(
   { billing = { required: false } } = { billing: { required: false } }
 ) {
   app.get('/api/auth', async (req, res) => {
-    console.log('/api/auth')
     return redirectToAuth(req, res, app)
   })
 
   app.get('/api/auth/callback', async (req, res) => {
-    console.log('/api/auth/callback')
     try {
       const session = await Shopify.Auth.validateAuthCallback(req, res, req.query)
 
@@ -63,9 +61,15 @@ export default function applyAuthMiddleware(
         }
       }
 
-      const host = Shopify.Utils.sanitizeHost(req.query.host)
+      // const host = Shopify.Utils.sanitizeHost(req.query.host)
+      // const redirectUrl = Shopify.Context.IS_EMBEDDED_APP
+      //   ? Shopify.Utils.getEmbeddedAppUrl(req)
+      //   : `/?shop=${session.shop}&host=${encodeURIComponent(host)}`
+
+      const host = req.query.host
+      const decodedHost = Buffer.from(host, 'base64').toString()
       const redirectUrl = Shopify.Context.IS_EMBEDDED_APP
-        ? Shopify.Utils.getEmbeddedAppUrl(req)
+        ? 'https://'.concat(decodedHost, '/apps/').concat(process.env.SHOPIFY_API_KEY)
         : `/?shop=${session.shop}&host=${encodeURIComponent(host)}`
 
       res.redirect(redirectUrl)

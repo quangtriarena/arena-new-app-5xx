@@ -4,9 +4,10 @@
   "main": "web/index.js",
   "license": "UNLICENSED",
   "scripts": {
+    "install_depend": "yarn && cd web/ && yarn && cd frontend/ && yarn && cd ../../",
     "shopify": "shopify",
-    "build": "shopify app build",
-    "dev": "shopify app dev",
+    "build": "gulp && shopify app build",
+    "dev": "gulp && shopify app dev",
     "info": "shopify app info",
     "scaffold": "shopify app scaffold",
     "deploy": "shopify app deploy",
@@ -19,11 +20,14 @@
     "docker": "docker run --rm -p 127.0.0.1:6379:6379/tcp redis",
     "dev_tunnel": "yarn dev --tunnel-url https://arena-new-app.ap.ngrok.io:5000",
     "serve": "cd web/ && yarn serve",
-    "serve_nodemon": "cd web/ && yarn serve_nodemon"
+    "serve_nodemon": "cd web/ && yarn serve_nodemon",
+    "pm2:start": "yarn build && pm2 start ecosystem.config.js --env production",
+    "pm2:restart": "pm2 stop 0 && yarn build && pm2 restart ecosystem.config.js --env production"
   },
   "dependencies": {
     "@shopify/app": "3.10.1",
     "@shopify/cli": "3.10.1",
+    "dotenv": "^16.0.2",
     "gulp": "^4.0.2"
   },
   "author": "mac",

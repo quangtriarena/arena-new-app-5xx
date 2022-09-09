@@ -125,7 +125,27 @@ const create = async (__type, data) => {
               throw new Error('Package not found')
             })
 
-          duplicatorPackage.logs.unshift(log)
+          // check if any logId
+          if (data.logId) {
+            log = duplicatorPackage.logs.find((item) => item.id == data.logId)
+            if (!log) {
+              throw new Error('Package log not found')
+            }
+
+            log = {
+              ...log,
+              status: 'PENDING',
+              message: '',
+              result: null,
+              updatedAt: new Date().toISOString(),
+            }
+
+            duplicatorPackage.logs = duplicatorPackage.logs.map((item) =>
+              item.id == data.logId ? log : item
+            )
+          } else {
+            duplicatorPackage.logs.unshift(log)
+          }
 
           duplicatorPackage = await DuplicatorPackageMiddleware.update(data.duplicatorPackageId, {
             shop: data.shop,
@@ -170,15 +190,11 @@ const create = async (__type, data) => {
           })
 
         log = duplicatorPackage.logs.find((item) => item.id == data.logId)
-        console.log('log :>> ', log)
         if (!log) {
-          throw new Error('Package not found')
-        } else {
-          if (log.result?.Location) {
-            // ok
-          } else {
-            throw new Error('Package is not ready to use')
-          }
+          throw new Error('Package log not found')
+        }
+        if (!log.result?.Location) {
+          throw new Error('Package is not ready to use')
         }
 
         __data = { ...__data, duplicatorPackageId: duplicatorPackage.id, logId: log.id }

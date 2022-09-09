@@ -24,10 +24,10 @@ function PlansPage(props) {
 
       if (res.data?.confirmation_url) {
         // subscribe plan
-        window.location.replace(res.data?.confirmation_url)
+        window.top.location.replace(res.data?.confirmation_url)
       } else {
         // downgrade plan
-        window.location.replace(`${window.BACKEND_URL}/api/auth?shop=${window.shopOrigin}`)
+        window.top.location.replace(`${window.BACKEND_URL}/api/auth?shop=${window.shopOrigin}`)
       }
     } catch (error) {
       actions.showNotify({ message: error.message, error: true })

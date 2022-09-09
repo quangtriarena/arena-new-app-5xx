@@ -1,6 +1,10 @@
 import apiCaller from '../helpers/apiCaller'
 
 const HistoryActionApi = {
+  rerun: async (id) => {
+    return await apiCaller(`/api/history-actions-rerun/${id}`)
+  },
+
   find: async (query) => {
     return await apiCaller(`/api/history-actions${query || ''}`)
   },

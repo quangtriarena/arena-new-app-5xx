@@ -11,12 +11,14 @@ Table.propTypes = {
   items: PropTypes.array,
   onDelete: PropTypes.func,
   onCancel: PropTypes.func,
+  onRerun: PropTypes.func,
 }
 
 Table.defaultProps = {
   items: null,
   onDelete: () => null,
   onCancel: () => null,
+  onRerun: () => null,
 }
 
 const Types = {
@@ -38,11 +40,12 @@ const BadgeStatuses = {
 }
 
 function Table(props) {
-  const { items, onCancel, onDelete } = props
+  const { items, onCancel, onDelete, onRerun } = props
 
   const [selected, setSelected] = useState(null)
   const [deleted, setDeleted] = useState(null)
   const [canceled, setCanceled] = useState(null)
+  const [reruned, setReruned] = useState(null)
   const [imported, setImported] = useState(null)
 
   const styles = {
@@ -134,18 +137,30 @@ function Table(props) {
         >
           <ActionList
             actionRole="menuitem"
-            items={[
-              {
-                content: 'Cancel',
-                onAction: () => setCanceled(item),
-                disabled: !['PENDING', 'RUNNING'].includes(item.status),
-              },
-              {
-                content: 'Delete',
-                onAction: () => setDeleted(item),
-                disabled: !['COMPLETED', 'FAILED', 'CANCELED'].includes(item.status),
-              },
-            ]}
+            items={(() => {
+              let items = []
+
+              if (['PENDING', 'RUNNING'].includes(item.status)) {
+                items.push({
+                  content: 'Cancel',
+                  onAction: () => setCanceled(item),
+                })
+              }
+              if (['COMPLETED', 'FAILED', 'CANCELED'].includes(item.status)) {
+                items.push({
+                  content: 'Re-run',
+                  onAction: () => setReruned(item),
+                })
+              }
+              if (['COMPLETED', 'FAILED', 'CANCELED'].includes(item.status)) {
+                items.push({
+                  content: 'Delete',
+                  onAction: () => setDeleted(item),
+                })
+              }
+
+              return items
+            })()}
           />
         </Popover>
       </Stack>,
@@ -199,6 +214,25 @@ function Table(props) {
               content: 'Cancel now',
               onAction: () => onCancel(canceled) & setCanceled(null),
               destructive: true,
+            },
+          ]}
+        />
+      )}
+
+      {reruned && (
+        <ConfirmModal
+          title="Confirm re-run process"
+          content="Are you sure you want to re-run process?"
+          onClose={() => setReruned(null)}
+          actions={[
+            {
+              content: 'Discard',
+              onAction: () => setReruned(null),
+            },
+            {
+              content: 'Re-run now',
+              onAction: () => onRerun(reruned) & setReruned(null),
+              primary: true,
             },
           ]}
         />

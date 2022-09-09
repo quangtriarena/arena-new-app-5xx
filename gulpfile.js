@@ -26,14 +26,8 @@ const updateScopes = async () => {
     if (envScopes !== shopifyAppTomlScopes) {
       shopifyAppTomlContent = shopifyAppTomlContent.replace(shopifyAppTomlScopes, envScopes)
 
-      await new Promise((resolve, reject) => {
-        fs.writeFile(shopifyAppTomlFilepath, shopifyAppTomlContent, 'utf8', (err, data) => {
-          if (err) {
-            reject(err)
-          }
-
-          resolve(data)
-        })
+      fs.writeFile(shopifyAppTomlFilepath, shopifyAppTomlContent, 'utf8', (err, data) => {
+        if (err) throw err
       })
     }
   } catch (error) {
@@ -42,7 +36,7 @@ const updateScopes = async () => {
 }
 
 async function defaultTask(cb) {
-  await updateScopes()
+  updateScopes()
 
   cb()
 }
