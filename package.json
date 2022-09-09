@@ -1,0 +1,34 @@
+{
+  "name": "arena-new-app-5xx",
+  "version": "1.0.0",
+  "main": "web/index.js",
+  "license": "UNLICENSED",
+  "scripts": {
+    "shopify": "shopify",
+    "build": "shopify app build",
+    "dev": "shopify app dev",
+    "info": "shopify app info",
+    "scaffold": "shopify app scaffold",
+    "deploy": "shopify app deploy",
+    "format:code": "npm run prettier:code -- --write",
+    "format:other": "npm run prettier:other -- --write",
+    "prettier:code": "prettier \"**/*.{js,jsx}\"",
+    "prettier:other": "prettier \"**/*.{md,css,scss,yaml,yml}\"",
+    "format": "npm-run-all -p format:*",
+    "ngrok": "ngrok http --subdomain=arena-new-app --region=ap 5000",
+    "docker": "docker run --rm -p 127.0.0.1:6379:6379/tcp redis",
+    "dev_tunnel": "yarn dev --tunnel-url https://arena-new-app.ap.ngrok.io:5000",
+    "serve": "cd web/ && yarn serve",
+    "serve_nodemon": "cd web/ && yarn serve_nodemon"
+  },
+  "dependencies": {
+    "@shopify/app": "3.10.1",
+    "@shopify/cli": "3.10.1",
+    "gulp": "^4.0.2"
+  },
+  "author": "mac",
+  "devDependencies": {
+    "npm-run-all": "^4.1.5",
+    "prettier": "^2.7.1"
+  }
+}
