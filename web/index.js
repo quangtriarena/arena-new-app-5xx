@@ -29,18 +29,18 @@ import duplicatorPackageRoute from './backend/routes/admin/duplicator_package.js
 import submitionRoute from './backend/routes/admin/submition.js'
 import ServerRebuildMiddleware from './backend/middlewares/server_rebuild.js'
 
-console.log('WEB ENV')
-console.log('| NODE_ENV :>>', process.env.NODE_ENV)
-console.log('| SHOPIFY_API_KEY :>>', process.env.SHOPIFY_API_KEY)
-console.log('| SHOPIFY_API_SECRET :>>', process.env.SHOPIFY_API_SECRET)
-console.log('| HOST :>>', process.env.HOST)
-console.log('| SCOPES :>>', process.env.SCOPES)
-console.log('| PORT :>>', process.env.PORT)
-console.log('| SERVER_PORT :>>', process.env.SERVER_PORT)
-console.log('| BACKEND_PORT :>>', process.env.BACKEND_PORT)
-console.log('| SHOP :>>', process.env.SHOP)
-console.log('| WEBHOOKS :>>', process.env.WEBHOOKS)
-console.log('| API_VERSION :>>', process.env.API_VERSION)
+// console.log('WEB ENV')
+// console.log('| NODE_ENV :>>', process.env.NODE_ENV)
+// console.log('| SHOPIFY_API_KEY :>>', process.env.SHOPIFY_API_KEY)
+// console.log('| SHOPIFY_API_SECRET :>>', process.env.SHOPIFY_API_SECRET)
+// console.log('| HOST :>>', process.env.HOST)
+// console.log('| SCOPES :>>', process.env.SCOPES)
+// console.log('| PORT :>>', process.env.PORT)
+// console.log('| SERVER_PORT :>>', process.env.SERVER_PORT)
+// console.log('| BACKEND_PORT :>>', process.env.BACKEND_PORT)
+// console.log('| SHOP :>>', process.env.SHOP)
+// console.log('| WEBHOOKS :>>', process.env.WEBHOOKS)
+// console.log('| API_VERSION :>>', process.env.API_VERSION)
 
 const USE_ONLINE_TOKENS = false
 

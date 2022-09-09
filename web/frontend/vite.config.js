@@ -1,18 +1,18 @@
 import dotenv from 'dotenv'
 dotenv.config({ path: './../../.env' })
 
-console.log('VITE ENV')
-console.log('| NODE_ENV :>>', process.env.NODE_ENV)
-console.log('| SHOPIFY_API_KEY :>>', process.env.SHOPIFY_API_KEY)
-console.log('| SHOPIFY_API_SECRET :>>', process.env.SHOPIFY_API_SECRET)
-console.log('| HOST :>>', process.env.HOST)
-console.log('| SCOPES :>>', process.env.SCOPES)
-console.log('| PORT :>>', process.env.PORT)
-console.log('| SERVER_PORT :>>', process.env.SERVER_PORT)
-console.log('| BACKEND_PORT :>>', process.env.BACKEND_PORT)
-console.log('| SHOP :>>', process.env.SHOP)
-console.log('| WEBHOOKS :>>', process.env.WEBHOOKS)
-console.log('| API_VERSION :>>', process.env.API_VERSION)
+// console.log('VITE ENV')
+// console.log('| NODE_ENV :>>', process.env.NODE_ENV)
+// console.log('| SHOPIFY_API_KEY :>>', process.env.SHOPIFY_API_KEY)
+// console.log('| SHOPIFY_API_SECRET :>>', process.env.SHOPIFY_API_SECRET)
+// console.log('| HOST :>>', process.env.HOST)
+// console.log('| SCOPES :>>', process.env.SCOPES)
+// console.log('| PORT :>>', process.env.PORT)
+// console.log('| SERVER_PORT :>>', process.env.SERVER_PORT)
+// console.log('| BACKEND_PORT :>>', process.env.BACKEND_PORT)
+// console.log('| SHOP :>>', process.env.SHOP)
+// console.log('| WEBHOOKS :>>', process.env.WEBHOOKS)
+// console.log('| API_VERSION :>>', process.env.API_VERSION)
 
 import { defineConfig } from 'vite'
 import { dirname } from 'path'

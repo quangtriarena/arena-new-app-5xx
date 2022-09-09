@@ -78,7 +78,6 @@ const apiCaller = async ({ shop, accessToken, endpoint, method, data, extraHeade
     let message = error.message
 
     if (error.response?.data) {
-      console.log('error.response?.data :>> ', error.response?.data)
       if (error.response.data.errors) {
         switch (typeof error.response.data.errors) {
           case 'string':
@@ -107,6 +106,10 @@ const apiCaller = async ({ shop, accessToken, endpoint, method, data, extraHeade
 
       return await apiCaller({ shop, accessToken, endpoint, method, data, extraHeaders, pageInfo })
     }
+
+    console.log('apiCaller error:')
+    console.log('| endpoint :>>', endpoint)
+    console.log('| message :>> ', message)
 
     throw { message }
   }

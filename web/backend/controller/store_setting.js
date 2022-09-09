@@ -26,27 +26,34 @@ export default {
               type: billings[i].type,
               id: billings[i].id,
             })
-            billing = billing[billings[i].type]
+              .then((res) => res[billings[i].type])
+              .catch((err) => null)
 
-            if (billing.status !== billings[i].status) {
+            if (!billing) {
               updated = true
+              billings[i] = billing
+            } else {
+              if (billing.status !== billings[i].status) {
+                updated = true
+                billings[i] = { ...billings[i], status: billing.status }
 
-              billings[i] = { ...billings[i], status: billing.status }
+                if (billing.status === 'active') {
+                  let appBilling = APP_BILLINGS.find(
+                    (item) => item.id === billings[i].app_billing_id
+                  )
 
-              if (billing.status === 'active') {
-                let appBilling = APP_BILLINGS.find((item) => item.id === billings[i].app_billing_id)
+                  switch (billings[i].type) {
+                    case 'application_charge':
+                      data.credits += appBilling.credits[data.appPlan]
+                      break
 
-                switch (billings[i].type) {
-                  case 'application_charge':
-                    data.credits += appBilling.credits[data.appPlan]
-                    break
+                    case 'recurring_application_charge':
+                      data.appPlan = appBilling.plan
+                      break
 
-                  case 'recurring_application_charge':
-                    data.appPlan = appBilling.plan
-                    break
-
-                  default:
-                    break
+                    default:
+                      break
+                  }
                 }
               }
             }
@@ -55,7 +62,9 @@ export default {
 
         if (updated) {
           // remove draft billings
-          billings = billings.filter((item) => ['pending', 'active'].includes(item.status))
+          billings = billings
+            .filter((item) => item)
+            .filter((item) => ['pending', 'active'].includes(item.status))
 
           data = await StoreSettingMiddleware.update(data.id, {
             billings: JSON.stringify(billings),
