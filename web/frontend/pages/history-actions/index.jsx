@@ -12,8 +12,6 @@ function HistoryActionsPage(props) {
 
   const [historyActions, setHistoryActions] = useState(null)
 
-  useEffect(() => console.log('historyActions :>> ', historyActions), [historyActions])
-
   const getHistoryActions = async (query) => {
     try {
       if (window.__getProgressTimeout) {

@@ -5,7 +5,7 @@ import AdminZipMiddleware from './adm_zip.js'
 import AwsMiddleware from './aws.js'
 import DuplicatorPackageMiddleware from './duplicator_package.js'
 
-const LIMIT_PER_PROCESS = 10
+const LIMIT_PER_PROCESS = 100
 
 const create = async (job) => {
   const { historyActionId } = job.data

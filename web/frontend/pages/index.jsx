@@ -31,29 +31,46 @@ export default function HomePage(props) {
         </Layout.Section>
       </Layout>
 
-      <MediaCard
-        title="Export"
-        primaryAction={{
-          content: 'New Export',
-          onAction: () => props.navigate('/export/new'),
-        }}
-        description="You will be able to select the particular data items to backup."
-        popoverActions={[{ content: 'Support', onAction: () => props.navigate('/support') }]}
-      >
-        <img
-          alt=""
-          width="100%"
-          height="100%"
-          style={{
-            objectFit: 'cover',
-            objectPosition: 'center',
-            backgroundColor: '#f6f6f7',
-          }}
-          src={backupImage}
-        />
-      </MediaCard>
+      <Card sectioned title="New Export">
+        <Stack vertical>
+          <div>You will be able to select the particular data items to backup.</div>
+          <Button primary onClick={() => props.navigate('/export/new')}>
+            New Export
+          </Button>
+        </Stack>
+      </Card>
 
-      {window.shopOrigin === 'haloha-shop.myshopify.com' && <SubmitionButton {...props} />}
+      <Layout>
+        <Layout.AnnotatedSection title="Tutorials" description="">
+          <Card sectioned>
+            <Stack vertical>
+              <div>Here you will find a collection of written and video tutorials.</div>
+              <Button onClick={() => props.navigate('')}>See tutorials</Button>
+            </Stack>
+          </Card>
+        </Layout.AnnotatedSection>
+        <Layout.AnnotatedSection title="Documentation" description="">
+          <Card sectioned>
+            <Stack vertical>
+              <div>Specification for each kind of item, each and every field.</div>
+              <Button onClick={() => props.navigate('')}>Read documentation</Button>
+            </Stack>
+          </Card>
+        </Layout.AnnotatedSection>
+        <Layout.AnnotatedSection title="Support" description="">
+          <Card sectioned>
+            <Stack vertical>
+              <div>
+                If you have any questions, issues or concerns - don't guess, don't wait - contact us
+                and we will help you.
+              </div>
+              <Button onClick={() => props.navigate('/support')}>Contact support</Button>
+            </Stack>
+          </Card>
+        </Layout.AnnotatedSection>
+      </Layout>
+
+      {/* <SubmitionButton {...props} /> */}
     </Stack>
   )
 }

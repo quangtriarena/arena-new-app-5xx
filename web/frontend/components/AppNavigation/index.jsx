@@ -126,6 +126,7 @@ function AppNavigation(props) {
             <Button
               icon={isFullscreen ? MinimizeMinor : MaximizeMinor}
               onClick={onToggleFullscreen}
+              primary={!Boolean(isFullscreen)}
             >
               {isFullscreen ? 'Exit fullscreen' : 'Enter fullscreen'}
             </Button>

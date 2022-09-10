@@ -84,11 +84,7 @@ function Table(props) {
             <div style={styles.content}>{item.data?.description}</div>
           </Stack>
         )}
-        {Boolean(
-          item.type === 'duplicator_export' &&
-            item.result?.Location &&
-            window.shopOrigin === 'haloha-shop.myshopify.com'
-        ) && (
+        {/* {Boolean(item.type === 'duplicator_export' && item.result?.Location) && (
           <Stack spacing="tight" alignment="baseline" wrap={false}>
             <div style={styles.label}>Exported file</div>
             <div>:</div>
@@ -96,7 +92,7 @@ function Table(props) {
               Download
             </Button>
           </Stack>
-        )}
+        )} */}
         {Boolean(item.type === 'duplicator_import' && item.result?.length > 0) && (
           <Stack spacing="tight" alignment="baseline" wrap={false}>
             <div style={styles.label}>Result</div>

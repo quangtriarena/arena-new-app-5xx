@@ -51,11 +51,11 @@ export default {
           throw new Error('Invalid unique code')
         })
 
-      // if (storeSetting.uuid === uuid) {
-      //   throw new Error('Duplicator store cannot be your store')
-      // }
+      if (storeSetting.uuid === uuid) {
+        throw new Error('Duplicator store cannot be your store')
+      }
 
-      if (duplicatorStore.duplicators.map((item) => item.uuid).includes(uuid)) {
+      if (duplicatorStore.duplicators.find((item) => item.uuid === uuid)) {
         throw new Error('Cannot set your child store as your duplicator store')
       }
 

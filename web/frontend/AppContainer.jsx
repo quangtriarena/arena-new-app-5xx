@@ -14,7 +14,7 @@ import ConfirmModal from './components/ConfirmModal'
 function AppContainer(props) {
   const { actions, storeSetting, notify, appLoading } = props
 
-  const [isFullscreen, setIsFullscreen] = useState(true)
+  const [isFullscreen, setIsFullscreen] = useState(false)
   const [openConfirmModal, setOpenConfirmModal] = useState(false)
 
   useEffect(() => console.log('appProps :>> ', props), [props])

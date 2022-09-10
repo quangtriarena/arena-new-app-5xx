@@ -35,8 +35,6 @@ function Table(props) {
   const [archived, setArchived] = useState(null)
   const [imported, setImported] = useState(null)
 
-  useEffect(() => console.log('backupPackages :>> ', backupPackages), [backupPackages])
-
   const getBackupPackages = async () => {
     try {
       setBackupPackages(null)

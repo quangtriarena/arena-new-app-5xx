@@ -22,8 +22,6 @@ function ConfirmPackage(props) {
 
   const [logSelected, setLogSelected] = useState(logs[0])
 
-  useEffect(() => console.log('logSelected :>> ', logSelected), [logSelected])
-
   return (
     <Modal
       open={true}
