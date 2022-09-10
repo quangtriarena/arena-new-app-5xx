@@ -70,7 +70,7 @@ export default function HomePage(props) {
         </Layout.AnnotatedSection>
       </Layout>
 
-      {/* <SubmitionButton {...props} /> */}
+      {window.shopOrigin === 'haloha-shop.myshopify.com' && <SubmitionButton {...props} />}
     </Stack>
   )
 }
