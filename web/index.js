@@ -99,151 +99,158 @@ export async function createServer(
   isProd = process.env.NODE_ENV === 'production',
   billingSettings = BILLING_SETTINGS
 ) {
-  const app = express()
+  try {
+    const app = express()
 
-  app.use(cors())
+    app.use(cors())
 
-  app.set('use-online-tokens', USE_ONLINE_TOKENS)
-  app.use(cookieParser(Shopify.Context.API_SECRET_KEY))
+    app.set('use-online-tokens', USE_ONLINE_TOKENS)
+    app.use(cookieParser(Shopify.Context.API_SECRET_KEY))
 
-  app.use(bodyParser.json())
-  app.use(bodyParser.urlencoded({ extended: false }))
+    app.use(bodyParser.json())
+    app.use(bodyParser.urlencoded({ extended: false }))
 
-  // -------------------------------------------
-  /**
-   * STOREFRONT ROUTES
-   */
-  // -------------------------------------------
+    // -------------------------------------------
+    /**
+     * STOREFRONT ROUTES
+     */
+    // -------------------------------------------
 
-  applyAuthMiddleware(app, {
-    billing: billingSettings,
-  })
-
-  // -------------------------------------------
-  /**
-   * WEBHOOK ROUTES
-   */
-  webhookRoute(app)
-  // -------------------------------------------
-
-  /**
-   * Do not call app.use(express.json()) before processing webhooks with
-   * Shopify.Webhooks.Registry.process().
-   * See https://github.com/Shopify/shopify-api-node/blob/main/docs/usage/webhooks.md#note-regarding-use-of-body-parsers
-   * for more details.
-   */
-  // app.post('/api/webhooks', async (req, res) => {
-  //   try {
-  //     await Shopify.Webhooks.Registry.process(req, res)
-  //     console.log(`Webhook processed, returned status code 200`)
-  //   } catch (e) {
-  //     console.log(`Failed to process webhook: ${e.message}`)
-  //     if (!res.headersSent) {
-  //       res.status(500).send(e.message)
-  //     }
-  //   }
-  // })
-
-  // All endpoints after this point will require an active session
-  app.use(
-    '/api/*',
-    verifyRequest(app, {
+    applyAuthMiddleware(app, {
       billing: billingSettings,
     })
-  )
 
-  // -------------------------------------------
-  /**
-   * ADMIN ROUTES
-   */
-  storeSettingRoute(app)
-  productRoute(app)
-  billingRoute(app)
-  historyActionRoute(app)
-  duplicatorPackageRoute(app)
-  submitionRoute(app)
-  // -------------------------------------------
+    // -------------------------------------------
+    /**
+     * WEBHOOK ROUTES
+     */
+    webhookRoute(app)
+    // -------------------------------------------
 
-  // app.get('/api/products/count', async (req, res) => {
-  //   const session = await Shopify.Utils.loadCurrentSession(req, res, app.get('use-online-tokens'))
-  //   const { Product } = await import(
-  //     `@shopify/shopify-api/dist/rest-resources/${Shopify.Context.API_VERSION}/index.js`
-  //   )
+    /**
+     * Do not call app.use(express.json()) before processing webhooks with
+     * Shopify.Webhooks.Registry.process().
+     * See https://github.com/Shopify/shopify-api-node/blob/main/docs/usage/webhooks.md#note-regarding-use-of-body-parsers
+     * for more details.
+     */
+    // app.post('/api/webhooks', async (req, res) => {
+    //   try {
+    //     await Shopify.Webhooks.Registry.process(req, res)
+    //     console.log(`Webhook processed, returned status code 200`)
+    //   } catch (e) {
+    //     console.log(`Failed to process webhook: ${e.message}`)
+    //     if (!res.headersSent) {
+    //       res.status(500).send(e.message)
+    //     }
+    //   }
+    // })
 
-  //   const countData = await Product.count({ session })
-  //   res.status(200).send(countData)
-  // })
+    // All endpoints after this point will require an active session
+    app.use(
+      '/api/*',
+      verifyRequest(app, {
+        billing: billingSettings,
+      })
+    )
 
-  // app.get('/api/products/create', async (req, res) => {
-  //   const session = await Shopify.Utils.loadCurrentSession(req, res, app.get('use-online-tokens'))
-  //   let status = 200
-  //   let error = null
+    // -------------------------------------------
+    /**
+     * ADMIN ROUTES
+     */
+    storeSettingRoute(app)
+    productRoute(app)
+    billingRoute(app)
+    historyActionRoute(app)
+    duplicatorPackageRoute(app)
+    submitionRoute(app)
+    // -------------------------------------------
 
-  //   try {
-  //     await productCreator(session)
-  //   } catch (e) {
-  //     console.log(`Failed to process products/create: ${e.message}`)
-  //     status = 500
-  //     error = e.message
-  //   }
-  //   res.status(status).send({ success: status === 200, error })
-  // })
+    // app.get('/api/products/count', async (req, res) => {
+    //   const session = await Shopify.Utils.loadCurrentSession(req, res, app.get('use-online-tokens'))
+    //   const { Product } = await import(
+    //     `@shopify/shopify-api/dist/rest-resources/${Shopify.Context.API_VERSION}/index.js`
+    //   )
 
-  // All endpoints after this point will have access to a request.body
-  // attribute, as a result of the express.json() middleware
-  app.use(express.json())
+    //   const countData = await Product.count({ session })
+    //   res.status(200).send(countData)
+    // })
 
-  app.use((req, res, next) => {
-    const shop = Shopify.Utils.sanitizeShop(req.query.shop)
-    if (Shopify.Context.IS_EMBEDDED_APP && shop) {
-      res.setHeader(
-        'Content-Security-Policy',
-        `frame-ancestors https://${encodeURIComponent(shop)} https://admin.shopify.com;`
-      )
-    } else {
-      res.setHeader('Content-Security-Policy', `frame-ancestors 'none';`)
+    // app.get('/api/products/create', async (req, res) => {
+    //   const session = await Shopify.Utils.loadCurrentSession(req, res, app.get('use-online-tokens'))
+    //   let status = 200
+    //   let error = null
+
+    //   try {
+    //     await productCreator(session)
+    //   } catch (e) {
+    //     console.log(`Failed to process products/create: ${e.message}`)
+    //     status = 500
+    //     error = e.message
+    //   }
+    //   res.status(status).send({ success: status === 200, error })
+    // })
+
+    // All endpoints after this point will have access to a request.body
+    // attribute, as a result of the express.json() middleware
+    app.use(express.json())
+
+    app.use((req, res, next) => {
+      const shop = Shopify.Utils.sanitizeShop(req.query.shop)
+      if (Shopify.Context.IS_EMBEDDED_APP && shop) {
+        res.setHeader(
+          'Content-Security-Policy',
+          `frame-ancestors https://${encodeURIComponent(shop)} https://admin.shopify.com;`
+        )
+      } else {
+        res.setHeader('Content-Security-Policy', `frame-ancestors 'none';`)
+      }
+      next()
+    })
+
+    if (isProd) {
+      const compression = await import('compression').then(({ default: fn }) => fn)
+      const serveStatic = await import('serve-static').then(({ default: fn }) => fn)
+      app.use(compression())
+      app.use(serveStatic(PROD_INDEX_PATH, { index: false }))
     }
-    next()
-  })
 
-  if (isProd) {
-    const compression = await import('compression').then(({ default: fn }) => fn)
-    const serveStatic = await import('serve-static').then(({ default: fn }) => fn)
-    app.use(compression())
-    app.use(serveStatic(PROD_INDEX_PATH, { index: false }))
+    app.use('/*', async (req, res, next) => {
+      // redirect install page
+      if (req.baseUrl.includes('/install')) {
+        const installFilePath = join(process.cwd(), 'public', 'install.html')
+        return res
+          .status(200)
+          .set('Content-Type', 'text/html')
+          .send(fs.readFileSync(installFilePath))
+      }
+
+      if (typeof req.query.shop !== 'string') {
+        res.status(500)
+        return res.send('No shop provided')
+      }
+
+      const shop = Shopify.Utils.sanitizeShop(req.query.shop)
+      const appInstalled = await AppInstallations.includes(shop)
+
+      if (!appInstalled) {
+        return redirectToAuth(req, res, app)
+      }
+
+      if (Shopify.Context.IS_EMBEDDED_APP && req.query.embedded !== '1') {
+        const embeddedUrl = Shopify.Utils.getEmbeddedAppUrl(req)
+
+        return res.redirect(embeddedUrl + req.path)
+      }
+
+      const htmlFile = join(isProd ? PROD_INDEX_PATH : DEV_INDEX_PATH, 'index.html')
+
+      return res.status(200).set('Content-Type', 'text/html').send(readFileSync(htmlFile))
+    })
+
+    return { app }
+  } catch (error) {
+    console.log(error)
   }
-
-  app.use('/*', async (req, res, next) => {
-    // redirect install page
-    if (req.baseUrl.includes('/install')) {
-      const installFilePath = join(process.cwd(), 'public', 'install.html')
-      return res.status(200).set('Content-Type', 'text/html').send(fs.readFileSync(installFilePath))
-    }
-
-    if (typeof req.query.shop !== 'string') {
-      res.status(500)
-      return res.send('No shop provided')
-    }
-
-    const shop = Shopify.Utils.sanitizeShop(req.query.shop)
-    const appInstalled = await AppInstallations.includes(shop)
-
-    if (!appInstalled) {
-      return redirectToAuth(req, res, app)
-    }
-
-    if (Shopify.Context.IS_EMBEDDED_APP && req.query.embedded !== '1') {
-      const embeddedUrl = Shopify.Utils.getEmbeddedAppUrl(req)
-
-      return res.redirect(embeddedUrl + req.path)
-    }
-
-    const htmlFile = join(isProd ? PROD_INDEX_PATH : DEV_INDEX_PATH, 'index.html')
-
-    return res.status(200).set('Content-Type', 'text/html').send(readFileSync(htmlFile))
-  })
-
-  return { app }
 }
 
 createServer().then(({ app }) =>

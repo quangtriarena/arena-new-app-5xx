@@ -24,21 +24,17 @@ const Model = PostgresSequelize.define('duplicator_packages', {
     defaultValue: 'ACTIVE',
   },
   resources: {
-    type: DataTypes.JSON,
-    defaultValue: null,
+    type: DataTypes.ARRAY(DataTypes.JSON),
+    defaultValue: [],
   },
   logs: {
-    type: DataTypes.JSON,
-    defaultValue: null,
+    type: DataTypes.ARRAY(DataTypes.JSON),
+    defaultValue: [],
   },
 })
 
 Model.prototype.toJSON = function () {
   let values = Object.assign({}, this.get())
-
-  values.resources =
-    values.resources && typeof values.resources === 'string' ? JSON.parse(values.resources) : []
-  values.logs = values.logs && typeof values.logs === 'string' ? JSON.parse(values.logs) : []
 
   return values
 }

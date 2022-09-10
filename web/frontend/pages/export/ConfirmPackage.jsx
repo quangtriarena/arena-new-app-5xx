@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types'
 import { useEffect, useState, version } from 'react'
 import { Modal, Select, Spinner, Stack, TextContainer } from '@shopify/polaris'
-import PackageVersionApi from '../../apis/package_version'
 import formatDateTime from '../../helpers/formatDateTime'
 
 ConfirmPackage.propTypes = {

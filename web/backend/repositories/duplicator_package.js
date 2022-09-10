@@ -11,7 +11,7 @@ export default {
       logs = logs.map((item) => (item.id === log.id ? log : item))
 
       entry = await Model.update(
-        { logs: JSON.stringify(logs) },
+        { logs },
         {
           where: { id },
           returning: true,

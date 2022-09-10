@@ -5,7 +5,6 @@ import FormValidate from '../../helpers/formValidate'
 import FormControl from '../../components/FormControl'
 import ResourceItem from './ResourceItem'
 import DuplicatorPackageApi from '../../apis/duplicator_package'
-import PackageVersionApi from '../../apis/package_version'
 import { generateExportDescriptions, generateExportName } from './actions'
 
 CreateForm.propTypes = {
@@ -40,7 +39,7 @@ const ResourceFormData = {
     type: 'select',
     label: 'Count',
     placeholder: '',
-    value: '5',
+    value: '10',
     error: '',
     required: true,
     validate: {},

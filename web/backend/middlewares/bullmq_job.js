@@ -128,6 +128,7 @@ const create = async (__type, data) => {
           // check if any logId
           if (data.logId) {
             log = duplicatorPackage.logs.find((item) => item.id == data.logId)
+
             if (!log) {
               throw new Error('Package log not found')
             }
@@ -151,16 +152,16 @@ const create = async (__type, data) => {
             shop: data.shop,
             name: data.name,
             description: data.description,
-            resources: JSON.stringify(data.resources),
-            logs: JSON.stringify(duplicatorPackage.logs),
+            resources: data.resources,
+            logs: duplicatorPackage.logs,
           })
         } else {
           duplicatorPackage = await DuplicatorPackageMiddleware.create({
             shop: data.shop,
             name: data.name,
             description: data.description,
-            resources: JSON.stringify(data.resources),
-            logs: JSON.stringify([log]),
+            resources: data.resources,
+            logs: [log],
           })
         }
 
