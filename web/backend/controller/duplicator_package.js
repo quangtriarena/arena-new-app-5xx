@@ -55,9 +55,9 @@ export default {
       //   throw new Error('Duplicator store cannot be your store')
       // }
 
-      // if (duplicatorStore.duplicators.map((item) => item.uuid).includes(uuid)) {
-      //   throw new Error('Cannot set your child store as your duplicator store')
-      // }
+      if (duplicatorStore.duplicators.map((item) => item.uuid).includes(uuid)) {
+        throw new Error('Cannot set your child store as your duplicator store')
+      }
 
       let storeSetting = await StoreSettingMiddleware.findOne({ shop })
 
