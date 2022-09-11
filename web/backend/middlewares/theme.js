@@ -1,10 +1,7 @@
 import apiCaller from '../helpers/apiCaller.js'
-import validateParams from '../helpers/validateParams.js'
 
 const getMain = async ({ shop, accessToken }) => {
   try {
-    validateParams({ shop, accessToken })
-
     let themes = await apiCaller({
       shop,
       accessToken,
@@ -13,6 +10,7 @@ const getMain = async ({ shop, accessToken }) => {
     themes = themes.themes
 
     let theme = themes.find((item) => item.role === 'main')
+
     if (!theme) {
       throw new Error('Not found')
     }
@@ -25,8 +23,6 @@ const getMain = async ({ shop, accessToken }) => {
 
 const find = async ({ shop, accessToken }) => {
   try {
-    validateParams({ shop, accessToken })
-
     return await apiCaller({
       shop,
       accessToken,
@@ -39,8 +35,6 @@ const find = async ({ shop, accessToken }) => {
 
 const findById = async ({ shop, accessToken, id }) => {
   try {
-    validateParams({ shop, accessToken, id })
-
     return await apiCaller({
       shop,
       accessToken,
@@ -52,8 +46,6 @@ const findById = async ({ shop, accessToken, id }) => {
 }
 const create = async ({ shop, accessToken, data }) => {
   try {
-    validateParams({ shop, accessToken, data })
-
     return await apiCaller({
       shop,
       accessToken,
@@ -68,8 +60,6 @@ const create = async ({ shop, accessToken, data }) => {
 
 const update = async ({ shop, accessToken, id, data }) => {
   try {
-    validateParams({ shop, accessToken, id, data })
-
     return await apiCaller({
       shop,
       accessToken,
@@ -84,8 +74,6 @@ const update = async ({ shop, accessToken, id, data }) => {
 
 const _delete = async ({ shop, accessToken, id }) => {
   try {
-    validateParams({ shop, accessToken, id })
-
     return await apiCaller({
       shop,
       accessToken,
