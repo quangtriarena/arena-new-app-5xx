@@ -24,10 +24,7 @@ import webhookRoute from './backend/routes/webhook/index.js'
 import storeSettingRoute from './backend/routes/admin/store_setting.js'
 import productRoute from './backend/routes/admin/product.js'
 import billingRoute from './backend/routes/admin/billing.js'
-import historyActionRoute from './backend/routes/admin/history_action.js'
-import duplicatorPackageRoute from './backend/routes/admin/duplicator_package.js'
 import submitionRoute from './backend/routes/admin/submition.js'
-import ServerRebuildMiddleware from './backend/middlewares/server_rebuild.js'
 
 // console.log('WEB ENV')
 // console.log('| NODE_ENV :>>', process.env.NODE_ENV)
@@ -160,8 +157,6 @@ export async function createServer(
     storeSettingRoute(app)
     productRoute(app)
     billingRoute(app)
-    historyActionRoute(app)
-    duplicatorPackageRoute(app)
     submitionRoute(app)
     // -------------------------------------------
 
@@ -261,10 +256,5 @@ createServer().then(({ app }) =>
     console.log(`+                                  +`)
     console.log(`++++++++++++++++++++++++++++++++++++`)
     console.log(`\n${process.env.HOST}/api/auth?shop=${process.env.SHOP}\n`)
-
-    /**
-     * Handle server rebuild
-     */
-    ServerRebuildMiddleware()
   })
 )

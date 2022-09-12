@@ -16,21 +16,9 @@ export default function App(props) {
             label: 'Home',
             pathname: '/',
           },
-          // {
-          //   label: 'Products',
-          //   pathname: '/products',
-          // },
           {
-            label: 'Export',
-            pathname: '/export',
-          },
-          {
-            label: 'Import',
-            pathname: '/import',
-          },
-          {
-            label: 'History actions',
-            pathname: '/history-actions',
+            label: 'Products',
+            pathname: '/products',
           },
         ]}
         secondaryActions={[

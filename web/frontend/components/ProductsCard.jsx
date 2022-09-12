@@ -23,6 +23,8 @@ export function ProductsCard() {
     },
   })
 
+  console.log('data :>> ', data)
+
   const toastMarkup = toastProps.content && !isRefetchingCount && (
     <Toast {...toastProps} onDismiss={() => setToastProps(emptyToastProps)} />
   )
@@ -63,7 +65,7 @@ export function ProductsCard() {
           <Heading element="h4">
             TOTAL PRODUCTS
             <DisplayText size="medium">
-              <TextStyle variation="strong">{isLoadingCount ? '-' : data.count}</TextStyle>
+              <TextStyle variation="strong">{isLoadingCount ? '-' : data?.data?.count}</TextStyle>
             </DisplayText>
           </Heading>
         </TextContainer>
