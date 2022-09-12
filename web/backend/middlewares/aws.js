@@ -23,9 +23,7 @@ const createBucket = async (name) => {
       const params = { Bucket: name }
 
       s3.createBucket(params, function (err, data) {
-        if (err) {
-          reject(err)
-        }
+        if (err) reject(err)
 
         resolve(data)
       })
@@ -43,9 +41,7 @@ const listBuckets = async () => {
   try {
     return new Promise((resolve, reject) => {
       s3.listBuckets(function (err, data) {
-        if (err) {
-          reject(err)
-        }
+        if (err) reject(err)
 
         resolve(data.Buckets)
       })
@@ -63,9 +59,7 @@ const getPrimaryBucket = async () => {
   try {
     return new Promise((resolve, reject) => {
       s3.listBuckets(function (err, data) {
-        if (err) {
-          reject(err)
-        }
+        if (err) reject(err)
 
         const bucket = data.Buckets.find((item) => item.Name === AWS_BUCKET_NAME)
 
@@ -92,9 +86,7 @@ const deleteBucket = async (name) => {
       const params = { Bucket: name }
 
       s3.deleteBucket(params, function (err, data) {
-        if (err) {
-          reject(err)
-        }
+        if (err) reject(err)
 
         resolve(data)
       })
@@ -115,9 +107,7 @@ const getFiles = async (keyword) => {
       const params = { Bucket: AWS_BUCKET_NAME }
 
       s3.listObjects(params, function (err, data) {
-        if (err) {
-          reject(err)
-        }
+        if (err) reject(err)
 
         resolve(
           keyword ? data.Contents.filter((item) => item.Key.includes(keyword)) : data.Contents
@@ -140,11 +130,10 @@ const getFileByKey = async (key) => {
       const params = { Bucket: AWS_BUCKET_NAME }
 
       s3.listObjects(params, function (err, data) {
-        if (err) {
-          reject(err)
-        }
+        if (err) reject(err)
 
         let file = data.Contents.find((item) => item.Key === key)
+
         if (!file) {
           reject(new Error('Not found'))
         }
@@ -160,23 +149,21 @@ const getFileByKey = async (key) => {
 /**
  *
  * @param {String} key
- * @param {String} content
+ * @param {String} body
  * @returns Object
  */
-const uploadFile = async (key, content) => {
+const uploadFile = async (key, body) => {
   try {
     return new Promise(async (resolve, reject) => {
       const params = {
         Bucket: AWS_BUCKET_NAME,
         Key: key,
-        Body: content,
+        Body: body,
         ACL: 'public-read',
       }
 
       s3.upload(params, function (err, data) {
-        if (err) {
-          reject(err)
-        }
+        if (err) reject(err)
 
         resolve(data)
       })
@@ -188,23 +175,18 @@ const uploadFile = async (key, content) => {
 
 /**
  *
- * @param {String} key
+ * @param {String} Key
  * @returns Object
  */
-const deleteFile = async (key) => {
+const deleteFile = async (Key) => {
   return new Promise(async (resolve, reject) => {
     const params = {
       Bucket: AWS_BUCKET_NAME,
-      Key: key,
+      Key,
     }
 
     s3.deleteObject(params, function (err, data) {
-      if (err) {
-        if (err) {
-          reject(err)
-        }
-      }
-
+      if (err) reject(err)
       resolve(data)
     })
   })
@@ -220,19 +202,17 @@ const deleteFile = async (key) => {
 const upload = async (key, filepath, unlinked = true) => {
   try {
     return new Promise(async (resolve, reject) => {
-      const fileContent = fs.readFileSync(filepath)
+      const body = fs.readFileSync(filepath)
 
       const params = {
         Bucket: AWS_BUCKET_NAME,
         Key: key,
-        Body: fileContent,
+        Body: body,
         ACL: 'public-read',
       }
 
       s3.upload(params, function (err, data) {
-        if (err) {
-          reject(err)
-        }
+        if (err) reject(err)
 
         if (unlinked) {
           /**

@@ -101,7 +101,7 @@ const getAll = async ({ shop, accessToken, count }) => {
 const find = async ({ shop, accessToken, first, reverse, pageInfo, search }) => {
   try {
     let _first = parseInt(first) >= 1 ? parseInt(first) : 20
-    let _reverse = Boolean(reverse || reverse === undefined) ? `, reverse: true` : ``
+    let _reverse = Boolean(reverse) ? `, reverse: true` : ``
     let _pageInfo = pageInfo ? `, after: "${pageInfo}"` : ``
     let _search = search ? `, query: "${search}"` : ``
 
@@ -161,8 +161,8 @@ const create = async ({ shop, accessToken, variables }) => {
       variables,
     })
 
-    let awaitFileReady = await new Promise(async (resolve, reject) => {
-      setTimeout(() => {
+    return await new Promise(async (resolve, reject) => {
+      let awaitFileReady = setTimeout(() => {
         graphqlCaller({
           shop,
           accessToken,
@@ -183,7 +183,7 @@ const create = async ({ shop, accessToken, variables }) => {
         })
           .then((res) => {
             if (res.files.edges[0]?.node?.preview?.status === 'READY') {
-              find({ shop, accessToken, first: 1, search: `filename:${filename}` })
+              find({ shop, accessToken, first: 1, reverse: true, search: `filename:${filename}` })
                 .then((_res) => resolve(_res.edges[0].node))
                 .catch((_err) => reject(_err))
             } else {
@@ -193,8 +193,6 @@ const create = async ({ shop, accessToken, variables }) => {
           .catch((err) => reject(err))
       }, 2000)
     })
-
-    return awaitFileReady
   } catch (error) {
     throw error
   }

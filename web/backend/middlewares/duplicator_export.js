@@ -97,7 +97,8 @@ const create = async (job) => {
     }
 
     // upload to s3
-    let uploaded = await AwsMiddleware.upload(filename, filepath)
+    let folder = `package-${duplicatorPackage.id}`
+    let uploaded = await AwsMiddleware.upload(folder + '/' + filename, filepath)
     console.log(`zip file uploaded into s3`)
     console.log(uploaded.Location)
 
