@@ -42,11 +42,11 @@ async function update(filepath, files) {
   }
 }
 
-async function extract(filepath, suffix = 'extracted') {
+async function extract(filepath, suffix = '_extracted') {
   try {
     const zip = new AdmZip(filepath)
 
-    const outputDir = path.parse(filepath).dir + '/' + `${path.parse(filepath).name}_${suffix}`
+    const outputDir = path.parse(filepath).dir + '/' + `${path.parse(filepath).name}${suffix}`
 
     zip.extractAllTo(outputDir)
 

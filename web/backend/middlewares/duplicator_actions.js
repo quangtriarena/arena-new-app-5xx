@@ -469,6 +469,7 @@ const DuplicatorActions = {
   handleFilename,
   generatePackageName,
   handleImportFile,
+  download,
   downloadAndUnzipFile,
   groupData,
 }

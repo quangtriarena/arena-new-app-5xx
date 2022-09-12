@@ -51,7 +51,7 @@ export default {
           throw new Error('Invalid unique code')
         })
 
-      if (storeSetting.uuid === uuid) {
+      if (duplicatorStore.uuid === uuid) {
         throw new Error('Duplicator store cannot be your store')
       }
 
