@@ -5,6 +5,7 @@ export default {
   submit: async (req, res) => {
     console.log('\n----------------------------------------')
     console.log('/api/submition')
+    console.log('\n----------------------------------------')
     try {
       const session = await verifyToken(req, res)
       const { shop, accessToken } = session
